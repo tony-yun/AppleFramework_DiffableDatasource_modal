@@ -6,24 +6,34 @@
 //
 
 import UIKit
+import SafariServices
 
 class FrameworkDetailViewController: UIViewController {
 
+    // 초기 설정
+    var framework: AppleFramework = AppleFramework(name: "Unknown", imageName: "", urlString: "", description: "")
+    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        updateUI()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func updateUI() {
+        imageView.image = UIImage(named: framework.imageName)
+        titleLabel.text = framework.name
+        descriptionLabel.text = framework.description
     }
-    */
-
+    
+    @IBAction func buttonTapped(_ sender: Any) {
+        guard let url = URL(string: framework.urlString) else {
+            return
+        }
+        let safari = SFSafariViewController(url: url)
+        present(safari, animated: true)
+    }
+    
 }

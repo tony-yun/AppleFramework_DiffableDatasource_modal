@@ -41,6 +41,9 @@ class FrameworkListViewController: UIViewController {
         
         // layer
         collectionView.collectionViewLayout = layout()
+        
+        // collection View의 위임자 = 나한테
+        collectionView.delegate = self
     }
     
     private func layout() -> UICollectionViewCompositionalLayout {
@@ -63,9 +66,24 @@ class FrameworkListViewController: UIViewController {
     }
 }
 
+// delegate안에 선택됐을 때 호출되는 메소드
 extension FrameworkListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let framework = list[indexPath.item]
         print(">>> selected: \(framework.name)")
+        
+        // 띄우고 싶은 것: FrameworkDetailViewController
+        // 스토리보드에 접근
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "FrameworkDetailViewController") as! FrameworkDetailViewController
+        
+        // list의 framework로 세팅을 해서 데이터를 가지고 온다.
+        vc.framework = framework
+        
+        // modal창 꽉채우기
+//         vc.modalPresentationStyle = .fullScreen
+        
+        // present 메소드를 이용해 띄워주기
+        present(vc, animated: true)
     }
 }
